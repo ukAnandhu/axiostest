@@ -1,11 +1,7 @@
 import { useCartStore } from '@/store/cartStore'
-import { CartItem as CART } from '@/types/cart';
+import Link from 'next/link';
 
-type itemProps = {
-  item: CART;
-}
-
-export default function CartPrice({item}: itemProps) {
+export default function CartPrice() {
   
  
   const totalPrice = useCartStore((state) => state.getTotalPrice())
@@ -15,30 +11,32 @@ export default function CartPrice({item}: itemProps) {
   //   (total, item) => total + item.price * item.quantity,
   //   0
   // )
+  const shippingFee = 10;
+  const grandTotal = totalPrice + shippingFee;
   
   return (
 
-      <section className="w-full  px-4 py-16">
+      <section className="w-full py-16">
   
         {/* Container */}
         <div className="max-w-6xl mx-auto">
   
           {/* Heading */}
-          <div className="flex items-center gap-4 mb-8">
-            <h2 className="text-lg md:text-xl font-medium text-gray-700">
-              CART TOTALS
-            </h2>
-  
-            <div className="w-16 h-[1px] bg-gray-400"></div>
-          </div>
+          <div className="flex items-center gap-4 mb-10">
+          <h1 className="text-xl md:text-2xl font-medium text-gray-700">
+            CART TOTALS
+          </h1>
+
+          <div className="w-16 h-[1px] bg-gray-400"></div>
+        </div>
   
           {/* Totals Box */}
-          <div className="max-w-xl ml-auto">
+          <div className="w-full ">
   
             {/* Subtotal */}
             <div className="flex justify-between py-3 border-b border-gray-300 text-sm text-gray-600">
               <span>Subtotal</span>
-              <span>${item.price}</span>
+              <span>${totalPrice}</span>
             </div>
   
             {/* Shipping */}
@@ -50,11 +48,12 @@ export default function CartPrice({item}: itemProps) {
             {/* Total */}
             <div className="flex justify-between py-3 text-sm font-medium text-gray-800">
               <span>Total</span>
-            <span>${totalPrice}</span>
+            <span>${grandTotal}</span>
             </div>
   
             {/* Button */}
             <div className="flex justify-end mt-6">
+            <Link href="/place-order">
               <button className="
                 bg-black
                 text-white
@@ -67,6 +66,7 @@ export default function CartPrice({item}: itemProps) {
               ">
                 PROCEED TO CHECKOUT
               </button>
+              </Link>
             </div>
   
           </div>

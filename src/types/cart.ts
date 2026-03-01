@@ -1,8 +1,10 @@
  export interface CartItem {
   id: string
-  name: string
+  title: string
   price: number
   image: string
   size: string
   quantity: number
+  category: "men" | "women" | "kid";
+  type: "topwear" | "bottomwear" | "winterwear";
 }

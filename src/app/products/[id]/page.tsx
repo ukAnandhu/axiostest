@@ -1,21 +1,20 @@
 import ProductItem from "@/components/product/ProductItem";
 import { products } from "@/data/products";
-import { notFound } from "next/navigation";
 
-type productId = { params: Promise<{ id: string }> }
+export function generateStaticParams() {
+  return products.map((product) => ({
+    id: product.id,
+  }));
+}
 
-// export default async function ProductId({ params }: { params: Promise<{ id: string }>}) {
-export default async function ProductId({ params }: productId) {
+export default async function ProductPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const product = products.find((p) => p.id === id);
 
-  const product = await params;
-
-  const productItem = products.find((p) => p.id === product.id);
-
-  if(!product){ notFound()}
+  if (!product) return <div>Not found</div>;
 
   return (
-    <div>
-      <ProductItem product={productItem} />
-    </div>
-  )
+    <ProductItem product={product} />
+  );
 }
+

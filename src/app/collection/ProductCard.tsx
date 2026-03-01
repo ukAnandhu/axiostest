@@ -1,7 +1,19 @@
 import Image from "next/image";
-import { Product } from "@/data/products";
 
-export default function ProductCard({ product }: { product: Product }) {
+interface Product {
+  id: string;
+  title: string;
+  price: number;
+  image: string;
+  sizes: string[];
+  category: string,
+  type: string,
+}
+
+interface Props {
+  product: Product;
+}
+export default function ProductCard({ product }: Props) {
   return (
     <div className="space-y-2">
 

@@ -1,10 +1,4 @@
-export interface Product {
-  id: string
-  title: string
-  price: number
-  image: string
-  sizes: string[]
-};
+
 // interface Product {
 //   id: number
 //   title: string
@@ -14,40 +8,50 @@ export interface Product {
 //   sizes: string[]
 // }
 
-export const products: Product[] = [
+export const products = [
   {
     id: "1",
     image: "/image1.png",
     title: "Women Round Neck Cotton Top",
     price: 19.99,
-    sizes: ["S", "M", "L", "XL"]
+    sizes: ["S", "M", "L", "XL"],
+    category: "women",
+    type: "topwear",
   },
   {
     id: "2",
     image: "/image1.png",
     title: "Men Round Neck Pure Cotton T-shirt",
     price: 29.99,
-    sizes: ["S", "M", "L", "XL"]
+    sizes: ["S", "M", "L", "XL"],
+    category: "men",
+    type: "topwear",
   },
   {
     id: "3",
     image: "/image1.png",
     title: "Girls Round Neck Cotton Top",
     price: 39.99,
-    sizes: ["S", "M", "L", "XL"]
+    sizes: ["S", "M", "L", "XL"],
+    category: "kids",
+    type: "bottomwear",
   },
   {
     id: "4",
     image: "/image2.png",
     title: "Girls Round Neck Cotton Top",
     price: 200,
-    sizes: ["S", "M", "L", "XL"]
+    sizes: ["S", "M", "L", "XL"],
+    category: "kids",
+    type: "winterwear",
   },
   {
     id: "5",
     image: "/image1.png",
     title: "Girls Round Neck Cotton Top",
     price: 200,
-    sizes: ["S", "M", "L", "XL"]
+    sizes: ["S", "M", "L", "XL"],
+    category: "men",
+    type: "bottomwear",
   },
 ];

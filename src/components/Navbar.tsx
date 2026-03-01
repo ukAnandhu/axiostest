@@ -2,26 +2,21 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useCartStore } from "@/store/cartStore";
-
-
-export default function Navbar() {
-  const cart = useCartStore((state) => state.cart)
-  
-    const totalItems = cart.reduce(
-      (total, item) => total + item.quantity,
-      0
-    )
+export default function Header() {
+  const totalItems = useCartStore((state) =>
+    state.getTotalItems()
+  );
+console.log(totalItems);
 
   return (
-    <header className="flex items-center justify-between md: py-5">
+    <header className="flex items-center justify-between md: py-4">
       {/* Logo Image */}
       <div className="flex items-center py-2">
         <Link href="/">
           <Image
             src="/logo.png"
-            alt="Zyr
-            a logo"
-            width={120}
+            alt="Zyra logo"
+            width={140}
             height={40}
             priority
             className="object-contain"
@@ -76,10 +71,14 @@ export default function Navbar() {
             <Image src="/cart-icon.png" alt="cart" width={20} height={20} />
           </Link>
           {/* Badge */}
+          {totalItems > 0 && (
+            <div className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+              {totalItems}
+            </div>
+          )
           
-                    <span className="absolute -top-2 -right-3 bg-black-500 text-white text-xs px-2 rounded-full">
-                      {totalItems}
-                    </span>
+          }
+                    
                  
         </div>
       </div>

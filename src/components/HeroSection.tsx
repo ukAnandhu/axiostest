@@ -33,7 +33,7 @@ export default function HeroSection() {
         </div>
 
         {/* Right Image */}
-        <div className="relative h-[400px] md:h-[500px] lg:h-[500px]">
+        <div className="relative h-[400px] md:h-[500px] lg:h-[400px]">
 
           <Image
             src="/logoicon.png"

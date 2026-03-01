@@ -2,20 +2,20 @@
 import Image from "next/image";
 import { useCartStore } from "@/store/cartStore"
 import CartPrice from "./CartPrice";
-import { Product } from "@/data/products";
 
 export default function CartPage() {
   const {
     cart,
-    increaseQuantity,
-    decreaseQuantity,
+    increaseQty,
+    decreaseQty,
     removeFromCart,
-  } = useCartStore()
+    getTotalPrice,
+  } = useCartStore();
 
   
   return (
     <div>
-    <section className="w-full min-h-screen  px-4 py-16">
+       <section className="w-full min-h-screen  px-4 py-16">
 
       {/* Container */}
       <div className="max-w-6xl mx-auto">
@@ -31,7 +31,8 @@ export default function CartPage() {
 
           {/* Cart Item */}
           {cart.map((item) => (
-        <div key={`${item.id}-${item.selectedSize}`} className="border-t border-b border-gray-300 py-6">
+        <>
+        <section key={`${item.id}-${item.size}`} className="border-t border-b border-gray-300 py-6">
 
           <div className="flex items-center justify-between">
 
@@ -70,7 +71,7 @@ export default function CartPage() {
                     text-sm
                     bg-white
                   ">
-                    L
+                    {item.size}
                   </span>
 
                 </div>
@@ -84,9 +85,9 @@ export default function CartPage() {
 
                 {/* Quantity */}
                 <div className="flex gap-3 mt-2">
-                  <button onClick={() => decreaseQuantity(item.id, item.selectedSize)}>-</button>
+                  <button onClick={() => decreaseQty(item.id, item.size)}>-</button>
                              <span>{item.quantity}</span>
-                             <button onClick={() => increaseQuantity(item.id, item.selectedSize)}>+</button>
+                             <button onClick={() => increaseQty(item.id, item.size)}>+</button>
                       </div>
               {/*<input
                 type="number"
@@ -106,7 +107,7 @@ export default function CartPage() {
               />*/}
 
               {/* Delete Icon */}
-                <button onClick={() => removeFromCart(item.id, item.selectedSize)} className="text-gray-500 hover:text-red-500">
+                <button onClick={() => removeFromCart(item.id, item.size)} className="text-gray-500 hover:text-red-500">
 
                 <Image  src="/tick-logo.png" alt="Delete" width={20} height={20} />
               </button>
@@ -115,14 +116,20 @@ export default function CartPage() {
 
            </div>
 
-        </div>
-          ))}
-      </div>
+        </section>
+        
+        </>
 
-    </section>
-    {cart.map((item) => (
-            <CartPrice key={`${item.id}-${item.selectedSize}`} item={item}  />
           ))}
-  </div>
+          <CartPrice />
+      </div>
+      
+      
+        
+    </section>
+    </div>
+   
+    
+ 
   );
 }

@@ -1,4 +1,13 @@
+import { useFilterStore } from "@/store/filterStore";
+
 export default function FilterSidebar() {
+  const {
+    selectedCategory,
+    selectedType,
+    toggleCategory,
+    toggleType,
+    clearFilters,
+  } = useFilterStore();
   return (
     <div className="w-full md:w-64 space-y-6">
 
@@ -7,41 +16,29 @@ export default function FilterSidebar() {
       {/* Categories */}
       <div className="border p-4 space-y-3">
         <h3 className="font-medium">CATEGORIES</h3>
-
-        <label className="flex items-center gap-2 text-sm">
-          <input type="checkbox" />
-          Men
-        </label>
-
-        <label className="flex items-center gap-2 text-sm">
-          <input type="checkbox" />
-          Women
-        </label>
-
-        <label className="flex items-center gap-2 text-sm">
-          <input type="checkbox" />
-          Kids
-        </label>
+         {["men", "women", "kids"].map((cat) => (
+          <label key={cat} className="flex items-center gap-2 text-sm">
+            <input type="checkbox" checked={selectedCategory.includes(cat)}
+              onChange={() => toggleCategory(cat)} />
+            {cat}
+          </label>
+         ))}
+        
       </div>
 
       {/* Type */}
       <div className="border p-4 space-y-3">
         <h3 className="font-medium">Type</h3>
 
-        <label className="flex items-center gap-2 text-sm">
-          <input type="checkbox" />
-          Topwear
-        </label>
-
-        <label className="flex items-center gap-2 text-sm">
-          <input type="checkbox" />
-          Bottomwear
-        </label>
-
-        <label className="flex items-center gap-2 text-sm">
-          <input type="checkbox" />
-          Winterwear
-        </label>
+        {["topwear", "bottomwear", "winterwear"].map((type) => (
+          <label key={type} className="flex items-center gap-2 text-sm">
+            <input type="checkbox" checked={selectedType.includes(type)}
+              onChange={() => toggleType(type)} />
+            {type}
+          </label>
+          
+         ))}
+         
       </div>
 
     </div>

@@ -1,8 +1,18 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Product } from "@/data/products";
+interface Product {
+  id: string;
+  title: string;
+  price: number;
+  image: string;
+  sizes: string[];
+}
 
-export default function RelatedProducts({ product }: { product: Product }) {
+interface Props {
+  product: Product;
+}
+
+export default function RelatedProducts({ product }: Props) {
   return (
     <section className="w-full  py-16 px-4">
 

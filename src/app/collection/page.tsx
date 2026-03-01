@@ -1,9 +1,24 @@
-
+"use client"
 import { products } from "@/data/products";
 import FilterSidebar from "./FilterSidebar";
 import ProductCard from "./ProductCard";
+import { useFilterStore } from "@/store/filterStore";
+
 
 export default function CollectionsPage() {
+  const { selectedCategory, selectedType } = useFilterStore();
+
+  const filteredProducts = products.filter((product) => {
+    const categoryMatch =
+      selectedCategory.length === 0 ||
+      selectedCategory.includes(product.category);
+
+    const typeMatch =
+      selectedType.length === 0 ||
+      selectedType.includes(product.type);
+
+    return categoryMatch && typeMatch;
+  });
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
 
@@ -42,7 +57,7 @@ export default function CollectionsPage() {
             lg:grid-cols-4
             gap-6
           ">
-            {products.map((product) => (
+            {filteredProducts.map((product) => (
               <ProductCard key={product.id} product={product}/>
             ))}
           </div>

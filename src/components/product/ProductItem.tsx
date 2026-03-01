@@ -3,16 +3,42 @@
 import Image from "next/image";
 import { useState } from "react";
 import { Star } from "lucide-react";
-import { Product } from "@/data/products";
 import Producttabs from "./Producttabs";
 import RelatedProducts from "./RelatedProducts";
 import { useCartStore } from "@/store/cartStore";
+import Link from "next/link";
 
+interface Product {
+  id: string;
+  title: string;
+  price: number;
+  image: string;
+  sizes: string[];
+}
 
-export default function ProductDetails({ product }: { product: Product }) {
+interface Props {
+  product: Product;
+}
+
+export default function ProductItem({ product }: Props) {
 
   const [selectedSize, setSelectedSize] = useState("")
   const addToCart = useCartStore((state) => state.addToCart)
+  
+  const handleAddToCart = () => {
+    if (!selectedSize) {
+      alert("Select size");
+      return;
+    }
+    addToCart({
+      id: product.id,
+      title: product.title,
+      price: product.price,
+      image: product.image,
+      size: selectedSize,
+    });
+  }
+
   return (
     <div>
       <section className="w-full px-4 py-10">
@@ -114,9 +140,10 @@ export default function ProductDetails({ product }: { product: Product }) {
             </div>
 
               {/* Button */}
+              
               <button
-                      disabled={!selectedSize}
-                      onClick={() => addToCart(product, selectedSize)}
+                
+                onClick={() => handleAddToCart()}
                 className="
                   mt-6
                   bg-black
@@ -127,9 +154,9 @@ export default function ProductDetails({ product }: { product: Product }) {
                   hover:bg-gray-800
                   transition
                 "
-                    >
-                      Add To Cart
-                    </button>
+              >
+                Add To Cart
+              </button>
             
 
             {/* Extra Info */}
@@ -153,6 +180,5 @@ export default function ProductDetails({ product }: { product: Product }) {
       <Producttabs />
       <RelatedProducts product={product} />
     </div>
-
   );
 }
