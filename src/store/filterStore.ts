@@ -1,18 +1,22 @@
 import { create } from "zustand";
 
+
+type SortOption = "low-high" | "high-low" | "";
+
 type FilterState = {
   selectedCategory: string[];
   selectedType: string[];
-
+  sortOption: SortOption;
   toggleCategory: (category: string) => void;
   toggleType: (type: string) => void;
-
+  setSortOption: (option: SortOption) => void;
   clearFilters: () => void;
 };
 
 export const useFilterStore = create<FilterState>((set) => ({
   selectedCategory: [],
   selectedType: [],
+  sortOption: "",
 
   toggleCategory: (category) =>
     set((state) => ({
@@ -32,5 +36,10 @@ export const useFilterStore = create<FilterState>((set) => ({
     set({
       selectedCategory: [],
       selectedType: [],
+    }),
+
+  setSortOption: (option: SortOption) =>
+    set({
+      sortOption: option,
     }),
 }));

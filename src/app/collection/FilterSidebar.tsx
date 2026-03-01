@@ -8,6 +8,7 @@ export default function FilterSidebar() {
     toggleType,
     clearFilters,
   } = useFilterStore();
+  
   return (
     <div className="w-full md:w-64 space-y-6">
 
