@@ -43,7 +43,11 @@ export default function CartPrice() {
           {/* Total */}
           <div className="flex justify-between py-3 text-sm font-medium text-gray-800">
             <span>Total</span>
-            <span>${grandTotal}</span>
+            {totalPrice === 0 ? (
+              <span>$0</span>
+            ) : (
+              <span>${grandTotal}</span>
+            )}
           </div>
 
           {/* Button */}
