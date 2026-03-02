@@ -28,62 +28,67 @@ export default function CartPage() {
           {cart.map((item) => (
             <div
               key={`${item.id}-${item.size}`}
-              className="grid grid-cols-[1fr_2fr_1fr] md:grid-cols-[0.5fr_2fr_1fr_1fr_0.5fr] items-center gap-4 py-4 border-t border-gray-100 last:border-b"
+              className="flex justify-between items-center gap-4 py-4 border-t border-gray-200 border-b"
             >
               {/* Product Image */}
-              <div className="w-20">
-                <Image
-                  src={item.image}
-                  alt={item.title}
-                  width={80}
-                  height={100}
-                  className="w-full object-cover"
-                />
-              </div>
+              <div className="flex items-center gap-4">
+                <div className="w-20">
+                  <Image
+                    src={item.image}
+                    alt={item.title}
+                    width={80}
+                    height={100}
+                    className="w-full object-cover"
+                  />
+                </div>
 
-              {/* Product Info */}
-              <div className="flex flex-col gap-1">
-                <h2 className="text-sm md:text-base font-medium text-gray-700">
-                  {item.title}
-                </h2>
-                <div className="flex items-center gap-4 mt-1">
-                  <p className="text-gray-600">${item.price}</p>
-                  <p className="px-3 py-1 bg-gray-50 border border-gray-200 text-xs">
-                    {item.size}
-                  </p>
+                {/* Product Info */}
+                <div className="flex flex-col gap-1">
+                  <h2 className="text-sm md:text-base font-medium text-gray-700">
+                    {item.title}
+                  </h2>
+                  <div className="flex items-center gap-4 mt-1">
+                    <p className="text-gray-600">${item.price}</p>
+                    <p className="px-3 py-1 bg-gray-50 border border-gray-200 text-xs">
+                      {item.size}
+                    </p>
+                  </div>
+                </div>
+
+              </div>
+              <div className="flex items-center gap-4">
+                {/* Quantity Selector */}
+                <div className="flex justify-center items-center md:justify-start">
+                  <input
+                    type="number"
+                    min="1"
+                    value={item.quantity}
+                    onChange={(e) => updateQty(item.id, item.size, parseInt(e.target.value) || 1)}
+                    className="w-16 border border-gray-300 px-2 py-2 text-center outline-none focus:border-gray-500"
+                  />
+                </div>
+
+                {/* Delete Icon */}
+                <div className="flex justify-end pr-14">
+                  <button
+                    onClick={() => removeFromCart(item.id, item.size)}
+                    className="text-black hover:text-red-500 transition-colors"
+                  >
+                    <Trash2 size={24} strokeWidth={1} />
+                  </button>
                 </div>
               </div>
-
-              {/* Quantity Selector */}
-              <div className="flex justify-center md:justify-start">
-                <input
-                  type="number"
-                  min="1"
-                  value={item.quantity}
-                  onChange={(e) => updateQty(item.id, item.size, parseInt(e.target.value) || 1)}
-                  className="w-16 border border-gray-300 px-2 py-1 text-center outline-none focus:border-gray-500"
-                />
-              </div>
-
-              {/* Delete Icon */}
-              <div className="flex justify-end pr-4">
-                <button
-                  onClick={() => removeFromCart(item.id, item.size)}
-                  className="text-gray-400 hover:text-red-500 transition-colors"
-                >
-                  <Trash2 size={20} strokeWidth={1} />
-                </button>
-              </div>
             </div>
-          ))}
-        </div>
 
-        {/* Total Price Section */}
-        <div className="mt-10 flex justify-end">
-          <div className="w-full sm:w-[450px]">
-            <CartPrice />
+          ))}
+          <div className="mt-10">
+            <div className="w-full  sm: flex-1">
+              <CartPrice />
+            </div>
           </div>
         </div>
+        {/* Total Price Section */}
+
       </div>
     </div>
   );
