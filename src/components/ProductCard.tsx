@@ -2,6 +2,8 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { Product } from "@/types/product";
+
 type Props = Product;
 
 export default function ProductCard({
@@ -9,21 +11,21 @@ export default function ProductCard({
   image,
   title,
   price,
-}: Props){
+}: Props) {
   return (
     <div className="cursor-pointer">
-      
+
       {/* Image */}
       <div className="bg-gray-100 overflow-hidden">
         <Link key={id} href={`/products/${id}`}>
-        <Image
-          src={image}
-          alt={title}
-          width={400}
-          height={500}
-          className="w-full h-auto object-cover hover:scale-105 transition duration-300"
-        />
-      </Link>
+          <Image
+            src={image}
+            alt={title}
+            width={400}
+            height={500}
+            className="w-full h-auto object-cover hover:scale-105 transition duration-300"
+          />
+        </Link>
       </div>
 
       {/* Title */}

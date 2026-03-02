@@ -1,14 +1,7 @@
 
-// interface Product {
-//   id: number
-//   title: string
-//   price: number
-//   image: string
-//   description: string
-//   sizes: string[]
-// }
+import { Product } from "@/types/product";
 
-export const products = [
+export const products: Product[] = [
   {
     id: "1",
     image: "/image1.png",

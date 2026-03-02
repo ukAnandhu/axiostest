@@ -8,14 +8,7 @@ import RelatedProducts from "./RelatedProducts";
 import { useCartStore } from "@/store/cartStore";
 import Link from "next/link";
 
-interface Product {
-  id: string;
-  title: string;
-  price: number;
-  image: string;
-  images?: string[]; // Allowing multiple images
-  sizes: string[];
-}
+import { Product } from "@/types/product";
 
 interface Props {
   product: Product;

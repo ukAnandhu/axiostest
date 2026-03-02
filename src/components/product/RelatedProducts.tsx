@@ -1,13 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-interface Product {
-  id: string;
-  title: string;
-  price: number;
-  image: string;
-  sizes: string[];
-}
+import { Product } from "@/types/product";
 
 interface Props {
   product: Product;
@@ -38,18 +32,19 @@ export default function RelatedProducts({ product }: Props) {
           lg:grid-cols-5
           gap-6
         ">
-            <Link href={`/product/${product.id}`} key={product.id}>
-              
-              <div className="group cursor-pointer">
 
-                {/* Image */}
-                <div className="overflow-hidden bg-white">
-                  <Image
-                    src={product.image}
-                    alt={product.title}
-                    width={400}
-                    height={500}
-                    className="
+
+          <div className="group cursor-pointer">
+
+            {/* Image */}
+            <div className="overflow-hidden bg-white">
+              <Link href={`/products/${product.id}`}>
+                <Image
+                  src={product.image}
+                  alt={product.title}
+                  width={400}
+                  height={500}
+                  className="
                       w-full 
                       h-auto 
                       object-cover
@@ -57,25 +52,24 @@ export default function RelatedProducts({ product }: Props) {
                       duration-300
                       group-hover:scale-105
                     "
-                  />
-                </div>
+                />
+              </Link>
+            </div>
 
-                {/* Product Info */}
-                <div className="pt-3">
+            {/* Product Info */}
+            <div className="pt-3">
 
-                  <h3 className="text-sm text-gray-700">
-                    {product.title}
-                  </h3>
+              <h3 className="text-sm text-gray-700">
+                {product.title}
+              </h3>
 
-                  <p className="text-sm font-medium text-gray-800 mt-1">
-                    ${product.price}
-                  </p>
+              <p className="text-sm font-medium text-gray-800 mt-1">
+                ${product.price}
+              </p>
 
-                </div>
+            </div>
 
-              </div>
-
-            </Link>
+          </div>
 
         </div>
 
