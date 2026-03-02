@@ -13,6 +13,7 @@ interface Product {
   title: string;
   price: number;
   image: string;
+  images?: string[]; // Allowing multiple images
   sizes: string[];
 }
 
@@ -21,13 +22,18 @@ interface Props {
 }
 
 export default function ProductItem({ product }: Props) {
+  // Use product images if available, otherwise just duplicate the main image for the demo gallery
+  const galleryImages = product.images && product.images.length > 0
+    ? product.images
+    : [product.image, product.image, product.image, product.image];
 
-  const [selectedSize, setSelectedSize] = useState("")
-  const addToCart = useCartStore((state) => state.addToCart)
-  
+  const [mainImage, setMainImage] = useState(galleryImages[0]);
+  const [selectedSize, setSelectedSize] = useState("");
+  const addToCart = useCartStore((state) => state.addToCart);
+
   const handleAddToCart = () => {
     if (!selectedSize) {
-      alert("Select size");
+      alert("Please select a size first.");
       return;
     }
     addToCart({
@@ -36,147 +42,130 @@ export default function ProductItem({ product }: Props) {
       price: product.price,
       image: product.image,
       size: selectedSize,
+      category: "men", // Using dummy default or deriving if product type has it
+      type: "topwear" // Using dummy default or deriving if product type has it
     });
-  }
+    alert("Product added to cart!");
+  };
 
   return (
     <div>
-      <section className="w-full px-4 py-10">
-      <div className="max-w-6xl mx-auto">
+      <section className="w-full ">
+        <div className="max-w-6xl mx-auto pt-10">
 
-        {/* Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+          {/* Layout Configuration */}
+          <div className="flex flex-col md:flex-row gap-12">
 
-          {/* LEFT - Images */}
-          <div className="flex gap-4">
+            {/* LEFT - Images */}
+            <div className="flex flex-col-reverse sm:flex-row gap-3 sm:gap-4 md:w-1/2">
 
-            {/* Thumbnails */}
-            <div className="flex flex-col gap-4">
-              {/*{images.map((img, index) => (*/}
-                <div
-                  key={product.id}
-                  // onClick={() => setMainImage(img)}
-                  className="cursor-pointer"
-
-                >
-                  <Image
-                    src={product.image}
-                    alt="thumb"
-                    width={80}
-                    height={100}
-                    className="object-cover"
-                  />
-                </div>
-
-            </div>
-
-            {/* Main Image */}
-            <div className="bg-white">
-              <Image
-                src={product.image}
-                alt="product"
-                width={500}
-                height={600}
-                className="object-cover"
-              />
-            </div>
-
-          </div>
-
-          {/* RIGHT - Product Info */}
-          <div>
-
-            {/* Title */}
-            <h1 className="text-xl md:text-2xl font-medium text-gray-800">
-              Men Round Neck Pure Cotton T-shirt
-            </h1>
-
-            {/* Rating */}
-            <div className="flex items-center gap-2 mt-2">
-
-              <div className="flex text-yellow-500">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <Star key={star} size={16} fill="currentColor" />
+              {/* Thumbnails (Vertical on desktop, horizontal on mobile) */}
+              <div className="flex sm:flex-col overflow-x-auto sm:overflow-y-auto sm:w-[15%] w-full gap-3 scrollbar-hide py-2 sm:py-0">
+                {galleryImages.map((img, index) => (
+                  <div
+                    key={index}
+                    onClick={() => setMainImage(img)}
+                    className="cursor-pointer flex-shrink-0"
+                  >
+                    <Image
+                      src={img}
+                      alt={`thumb-${index}`}
+                      width={100}
+                      height={120}
+                      className={`object-cover w-16 sm:w-full h-20 sm:h-28 ${mainImage === img ? 'opacity-100' : 'opacity-70 hover:opacity-100'
+                        } transition-opacity duration-200`}
+                    />
+                  </div>
                 ))}
               </div>
 
-              <span className="text-sm text-gray-600">(122)</span>
+              {/* Main Image View */}
+              <div className="w-full sm:w-[85%] bg-[#F5F5F5] h-[450px] ">
+                <Image
+                  src={mainImage}
+                  alt="product"
+                  width={600}
+                  height={600}
+                  className="object-cover w-full h-auto max-h-[450px]"
+                />
+              </div>
 
             </div>
 
-            {/* Price */}
-            <div className="mt-4">
-              <span className="text-2xl font-semibold text-gray-800">
-                ${product.price}
-              </span>
-            </div>
+            {/* RIGHT - Product Info */}
+            <div className="flex flex-col md:w-1/2">
 
-            {/* Description */}
-            <p className="text-sm text-gray-600 mt-4 leading-6 max-w-md">
-              A lightweight, usually knitted, pullover shirt, close-fitting and
-              with a round neckline and short sleeves, worn as an undershirt or
-              outer garment.
-            </p>
+              {/* Title */}
+              <h1 className="text-2xl font-medium text-gray-900 mt-2">
+                {product.title}
+              </h1>
 
-            {/* Size */}
-            <div className="mt-6">
-              <p className="text-sm text-gray-700 mb-3">Select Size</p>
+              {/* Rating */}
+              <div className="flex items-center gap-2 mt-4">
+                <div className="flex text-[#FF6347]">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <Star key={star} size={16} fill="currentColor" stroke="none" />
+                  ))}
+                </div>
+                <span className="text-sm text-gray-600">(122)</span>
+              </div>
 
-              <div className="flex gap-3">
+              {/* Price */}
+              <div className="mt-6">
+                <span className="text-3xl font-semibold text-gray-900">
+                  ${product.price}
+                </span>
+              </div>
 
+              {/* Description */}
+              <p className="text-gray-500 mt-6 leading-relaxed text-sm md:w-[85%]">
+                A lightweight, usually knitted, pullover shirt, close-fitting and
+                with a round neckline and short sleeves, worn as an undershirt or
+                outer garment.
+              </p>
 
+              {/* Size Selector */}
+              <div className="mt-8">
+                <p className="text-sm font-medium text-gray-800 mb-4">Select Size</p>
+                <div className="flex flex-wrap gap-3">
                   {product.sizes.map((size) => (
                     <button
                       key={size}
                       onClick={() => setSelectedSize(size)}
-                      className={`border px-3 py-1 ${selectedSize === size ? "bg-black text-white" : ""
-                        }`}
+                      className={`
+                        w-12 h-12 flex items-center justify-center cursor-pointer border bg-[#F9F9F9] border-gray-200 text-sm font-medium transition-all
+                        ${selectedSize === size ? "border-orange-400 text-black border-1" : "text-gray-700"}
+                      `}
                     >
                       {size}
                     </button>
                   ))}
+                </div>
+              </div>
+
+              {/* Add to Cart Button */}
+              <button
+                onClick={handleAddToCart}
+                className="mt-8 bg-black text-white px-8 py-3 w-fit text-sm font-medium active:scale-95 transition-transform"
+              >
+                ADD TO CART
+              </button>
+
+              <hr className="mt-10 md:w-4/5 border-gray-200" />
+
+              {/* Extra Info Footnotes */}
+              <div className="mt-6 text-sm text-gray-500 space-y-2">
+                <p>100% Original product.</p>
+                <p>Cash on Delivery Available on this product.</p>
+                <p>Easy return and exchange within 7 days.</p>
               </div>
 
             </div>
 
-              {/* Button */}
-              
-              <button
-                
-                onClick={() => handleAddToCart()}
-                className="
-                  mt-6
-                  bg-black
-                  text-white
-                  px-8
-                  py-3
-                  text-sm
-                  hover:bg-gray-800
-                  transition
-                "
-              >
-                Add To Cart
-              </button>
-            
-
-            {/* Extra Info */}
-            <div className="mt-6 border-t border-gray-300 pt-4 text-sm text-gray-600 space-y-1">
-
-              <p>100% Original product.</p>
-
-              <p>Cash on Delivery Available on this product.</p>
-
-              <p>Easy return and exchange within 7 days.</p>
-
-            </div>
-
           </div>
-
         </div>
-
-      </div>
-
       </section>
+
       <Producttabs />
       <RelatedProducts product={product} />
     </div>

@@ -36,7 +36,7 @@ export default function BestSeller() {
         grid-cols-2
         sm:grid-cols-2
         md:grid-cols-3
-        lg:grid-cols-4
+        lg:grid-cols-5
         gap-x-6
         gap-y-10
       ">

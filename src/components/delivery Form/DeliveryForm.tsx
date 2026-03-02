@@ -1,31 +1,24 @@
+import React from "react";
+
 export default function DeliveryForm() {
+  const inputClass = "w-full px-4 py-2 border border-gray-400 rounded text-sm placeholder:text-gray-400 focus:border-black transition-colors";
+
   return (
     <div className="w-full">
-      {/* Heading */}
-      <div className="flex items-center gap-4 mb-6">
-        <h2 className="text-gray-400 tracking-widest text-sm font-medium">
-          DELIVERY
-        </h2>
-        <h1 className="text-2xl font-semibold tracking-wide">
-          INFORMATION
-        </h1>
-        <div className="flex-1 h-[1px] bg-gray-300 ml-2"></div>
-      </div>
-
+      
       {/* Form */}
       <form className="space-y-4">
-
         {/* First + Last */}
         <div className="flex gap-4">
           <input
             type="text"
             placeholder="First name"
-            className="input"
+            className={inputClass}
           />
           <input
             type="text"
             placeholder="Last name"
-            className="input"
+            className={inputClass}
           />
         </div>
 
@@ -33,14 +26,14 @@ export default function DeliveryForm() {
         <input
           type="email"
           placeholder="Email address"
-          className="input w-full"
+          className={inputClass}
         />
 
         {/* Street */}
         <input
           type="text"
           placeholder="Street"
-          className="input w-full"
+          className={inputClass}
         />
 
         {/* City + State */}
@@ -48,12 +41,12 @@ export default function DeliveryForm() {
           <input
             type="text"
             placeholder="City"
-            className="input"
+            className={inputClass}
           />
           <input
             type="text"
             placeholder="State"
-            className="input"
+            className={inputClass}
           />
         </div>
 
@@ -62,12 +55,12 @@ export default function DeliveryForm() {
           <input
             type="text"
             placeholder="Zip code"
-            className="input"
+            className={inputClass}
           />
           <input
             type="text"
             placeholder="Country"
-            className="input"
+            className={inputClass}
           />
         </div>
 
@@ -75,9 +68,8 @@ export default function DeliveryForm() {
         <input
           type="text"
           placeholder="Phone"
-          className="input w-full"
+          className={inputClass}
         />
-
       </form>
     </div>
   );

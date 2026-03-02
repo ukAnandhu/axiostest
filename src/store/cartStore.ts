@@ -12,6 +12,8 @@ interface CartState {
 
   decreaseQty: (id: string, size: string) => void;
 
+  updateQty: (id: string, size: string, quantity: number) => void;
+
   getTotalItems: () => number;
 
   getTotalPrice: () => number;
@@ -69,11 +71,20 @@ export const useCartStore = create<CartState>((set, get) => ({
         .filter((item) => item.quantity > 0),
     })),
 
+  updateQty: (id, size, quantity) =>
+    set((state) => ({
+      cart: state.cart.map((item) =>
+        item.id === id && item.size === size
+          ? { ...item, quantity: Math.max(1, quantity) }
+          : item
+      ),
+    })),
+
   getTotalItems: () =>
     get().cart.reduce((total, item) => total + item.quantity, 0),
 
   getTotalPrice: () =>
-    get().cart.reduce( 
+    get().cart.reduce(
       (total, item) => total + item.price * item.quantity,
       0
     ),

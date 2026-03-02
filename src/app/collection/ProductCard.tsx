@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 interface Product {
   id: string;
@@ -16,7 +17,7 @@ interface Props {
 export default function ProductCard({ product }: Props) {
   return (
     <div className="space-y-2">
-
+      <Link key={product.id} href={`/products/${product.id}`}>
       <div className="bg-gray-100 aspect-square relative">
         <Image
           src={product.image}
@@ -25,7 +26,7 @@ export default function ProductCard({ product }: Props) {
           className="object-cover"
         />
       </div>
-
+      </Link>
       <h3 className="text-sm text-gray-700">
         {product.title}
       </h3>

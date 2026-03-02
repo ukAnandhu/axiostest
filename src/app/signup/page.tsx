@@ -2,21 +2,22 @@
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 
-export default function LoginPage() {
+export default function SignUpPage() {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
     defaultValues: {
+      name: "",
       email: "",
       password: "",
     },
   });
 
   const onSubmit = (data: any) => {
-    console.log("Login data:", data);
-    // Handle login logic here
+    console.log("Sign up data:", data);
+    // Handle signup logic here
   };
 
   return (
@@ -26,13 +27,37 @@ export default function LoginPage() {
         {/* Heading */}
         <div className="flex items-center justify-center gap-2 mb-8">
           <h1 className="text-3xl font-light text-gray-700 font-serif">
-            Login
+            Sign Up
           </h1>
           <div className="w-8 h-[1px] bg-gray-800"></div>
         </div>
 
         {/* Form */}
         <form onSubmit={handleSubmit(onSubmit)} className="w-full space-y-4">
+          {/* Name */}
+          <div className="flex flex-col gap-1">
+            <input
+              type="text"
+              placeholder="Name"
+              {...register("name", { required: "Name is required" })}
+              className={`
+                w-full
+                border
+                ${errors.name ? "border-red-500" : "border-gray-400"}
+                px-4
+                py-3
+                bg-transparent
+                text-sm
+                outline-none
+                focus:border-gray-800
+                placeholder:text-gray-400
+              `}
+            />
+            {errors.name && (
+              <span className="text-xs text-red-500">{errors.name.message as string}</span>
+            )}
+          </div>
+
           {/* Email */}
           <div className="flex flex-col gap-1">
             <input
@@ -82,15 +107,15 @@ export default function LoginPage() {
           </div>
 
           {/* Links */}
-          <div className="flex justify-between text-xs text-gray-800 mt-2">
+          <div className="flex justify-between text-sm text-gray-600 mt-2">
             <button
               type="button"
-              className="hover:text-black transition-colors"
+              className="text-xs text-gray-800 hover:text-black transition-colors"
             >
               Forgot your password?
             </button>
-            <Link href="/signup" className="hover:text-black transition-colors">
-              Create account
+            <Link href="/login" className="text-xs text-gray-800 hover:text-black transition-colors">
+              Login Here
             </Link>
           </div>
 
@@ -112,7 +137,7 @@ export default function LoginPage() {
                 tracking-wider
               "
             >
-              Sign In
+              Sign Up
             </button>
           </div>
         </form>
