@@ -3,7 +3,7 @@ import { products } from "@/data/products";
 
 export default function BestSeller() {
 
-  const bestSellerProducts = products.slice(0, 4);
+  const bestSellerProducts = products.slice(0, 5);
 
   return (
     <section className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-16">

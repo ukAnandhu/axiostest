@@ -2,3 +2,17 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+@theme {
+    --font-primary: var(--font-outfit), sans-serif;
+    --font-prata: var(--font-prata), serif;
+}
+
+@layer base {
+    body {
+        font-family: var(--font-outfit), sans-serif;
+    }
+
+    .prata-regular {
+        font-family: var(--font-prata);
+    }
+}

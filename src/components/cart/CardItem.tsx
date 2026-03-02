@@ -3,21 +3,13 @@ import Image from "next/image";
 import { useCartStore } from "@/store/cartStore"
 import CartPrice from "./CartPrice";
 import { Trash2 } from "lucide-react";
-import { useEffect, useState } from "react";
 
 export default function CartPage() {
-  const [isMounted, setIsMounted] = useState(false);
   const {
     cart,
     removeFromCart,
     updateQty,
   } = useCartStore();
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  if (!isMounted) return null;
 
   return (
     <div className="w-full min-h-screen px-4 py-16 bg-white">
@@ -36,7 +28,7 @@ export default function CartPage() {
           {cart.map((item) => (
             <div
               key={`${item.id}-${item.size}`}
-              className="grid grid-cols-[2fr_1fr_1fr] md:grid-cols-[0.5fr_3fr_1fr_0.1fr] items-center justify-center gap-4 py-4 border-t border-gray-200 last:border-b"
+              className="grid grid-cols-[1fr_2fr_1fr] md:grid-cols-[0.5fr_2fr_1fr_1fr_0.5fr] items-center gap-4 py-4 border-t border-gray-100 last:border-b"
             >
               {/* Product Image */}
               <div className="w-20">
@@ -63,7 +55,7 @@ export default function CartPage() {
               </div>
 
               {/* Quantity Selector */}
-              <div className="flex justify-center">
+              <div className="flex justify-center md:justify-start">
                 <input
                   type="number"
                   min="1"
@@ -79,20 +71,19 @@ export default function CartPage() {
                   onClick={() => removeFromCart(item.id, item.size)}
                   className="text-gray-400 hover:text-red-500 transition-colors"
                 >
-                  <Trash2 size={25} strokeWidth={1} />
+                  <Trash2 size={20} strokeWidth={1} />
                 </button>
               </div>
             </div>
           ))}
-          {/* Total Price Section */}
-          <div className="w-full mt-5">
-            <div className="w-full">
-              <CartPrice />
-            </div>
-          </div>
         </div>
 
-
+        {/* Total Price Section */}
+        <div className="mt-10 flex justify-end">
+          <div className="w-full sm:w-[450px]">
+            <CartPrice />
+          </div>
+        </div>
       </div>
     </div>
   );

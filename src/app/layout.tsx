@@ -3,6 +3,21 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { Outfit, Prata } from "next/font/google"
+
+const outfit = Outfit({
+  subsets: ["latin"],
+  variable: "--font-outfit",
+  display: "swap",
+  weight: ["300", "400", "500", "600", "700"],
+})
+
+const prata = Prata({
+  subsets: ["latin"],
+  variable: "--font-prata",
+  display: "swap",
+  weight: ["400"],
+})
 
 export const metadata: Metadata = {
   title: "Zyra",
@@ -15,10 +30,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-      >
-        <div className="px-4 lg:px-[9vw] md:px-[7vw] sm:px-[5vw]  bg-white">
+    <html lang="en" className={`${outfit.variable} ${prata.variable}`}>
+      <body className="font-primary antialiased">
+        <div className="px-4 lg:px-[9vw] md:px-[7vw] sm:px-[5vw] bg-white">
           <Navbar />
           {children}
           <Footer />

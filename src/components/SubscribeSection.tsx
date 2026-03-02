@@ -43,9 +43,9 @@ export default function SubscribeSection() {
           <input
             type="email"
             placeholder="Enter your email"
+          
             className="
-              w-full sm:flex-1 h-12 px-4 text-sm
-              outline-none bg-white text-gray-600
+               w-full outline-none sm:flex-1 h-12 px-4 text-sm
             "
             {...register("email", {
               required: "Email is required",
