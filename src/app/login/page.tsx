@@ -9,7 +9,7 @@ export default function LoginPage() {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      email: "",
+      username: "",
       password: "",
     },
   });
@@ -36,13 +36,13 @@ export default function LoginPage() {
           {/* Email */}
           <div className="flex flex-col gap-1">
             <input
-              type="email"
-              placeholder="Email"
-              {...register("email", { required: "Email is required" })}
+              type="username"
+              placeholder="Username"
+              {...register("username", { required: "Username is required" })}
               className={`
                 w-full
                 border
-                ${errors.email ? "border-red-500" : "border-gray-400"}
+                ${errors.username ? "border-red-500" : "border-gray-400"}
                 px-4
                 py-3
                 bg-transparent
@@ -52,8 +52,8 @@ export default function LoginPage() {
                 placeholder:text-gray-400
               `}
             />
-            {errors.email && (
-              <span className="text-xs text-red-500">{errors.email.message as string}</span>
+            {errors.username && (
+              <span className="text-xs text-red-500">{errors.username.message as string}</span>
             )}
           </div>
 

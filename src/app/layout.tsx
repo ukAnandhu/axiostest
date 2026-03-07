@@ -30,8 +30,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${outfit.variable} ${prata.variable}`}>
-      <body className="font-primary antialiased">
+    <html lang="en" className={`${outfit.variable} ${prata.variable}`} suppressHydrationWarning>
+      <body className="font-primary antialiased" suppressHydrationWarning>
         <div className="px-4 lg:px-[9vw] md:px-[7vw] sm:px-[5vw] bg-white">
           <Navbar />
           {children}

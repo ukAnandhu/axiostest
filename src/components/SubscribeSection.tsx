@@ -38,15 +38,14 @@ export default function SubscribeSection() {
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="w-full sm:w-3/4 flex items-center mx-auto border"
+          suppressHydrationWarning
         >
           {/* Input */}
           <input
             type="email"
             placeholder="Enter your email"
-          
-            className="
-               w-full outline-none sm:flex-1 h-12 px-4 text-sm
-            "
+            autoComplete="email"
+            className="w-full outline-none sm:flex-1 h-12 px-4 text-sm"
             {...register("email", {
               required: "Email is required",
               pattern: {
@@ -54,13 +53,13 @@ export default function SubscribeSection() {
                 message: "Invalid email address",
               },
             })}
+            suppressHydrationWarning
           />
 
           {/* Button */}
           <button
             type="submit"
-            className="
-              w-[140px] h-12 bg-black text-white text-xs font-medium"
+            className="w-[140px] h-12 bg-black text-white text-xs font-medium"
           >
             SUBSCRIBE
           </button>
