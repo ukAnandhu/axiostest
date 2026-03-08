@@ -1,8 +1,30 @@
+"use client"
+import { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
 import { products } from "@/data/products";
-
+import { getProducts } from "@/services/productService";
 export default function BestSeller() {
-
+   const [products, setProducts] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+  
+    useEffect(() => {
+      const fetchProducts = async () => {
+        try {
+          setLoading(true);
+          setError(null);
+          const data = await getProducts();
+          setProducts(data.products || []);
+        } catch (err: any) {
+          console.error("Failed to fetch products:", err);
+          setError("Failed to load products. Please check your network connection.");
+        } finally {
+          setLoading(false);
+        }
+      };
+  
+      fetchProducts();
+    }, []);
   const bestSellerProducts = products.slice(0, 5);
 
   return (
@@ -39,14 +61,20 @@ export default function BestSeller() {
         lg:grid-cols-5
         gap-x-6
         gap-y-10
-      ">
-
-        {bestSellerProducts.map((product) => (
-          <ProductCard
-            key={product.id}
-            {...product}
-          />
-        ))}
+      ">{loading ? (
+                <p className="col-span-full text-center text-gray-500">Loading products...</p>
+              ) : error ? (
+                <p className="col-span-full text-center text-red-500">{error}</p>
+              ) : products.length === 0 ? (
+                <p className="col-span-full text-center text-gray-500">No products found.</p>
+              ) : (
+                bestSellerProducts.map((product: any) => (
+                  <ProductCard
+                    key={product.id}
+                    {...product}
+                  />
+                ))
+              )}
 
       </div>
 

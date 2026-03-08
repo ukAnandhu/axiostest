@@ -3,13 +3,34 @@ import { products } from "@/data/products";
 import FilterSidebar from "./FilterSidebar";
 import ProductCard from "./ProductCard";
 import { useFilterStore } from "@/store/filterStore";
-
+import { useEffect, useState } from "react";
+import { getProducts } from "@/services/productService";
 
 export default function CollectionsPage() {
   const { selectedCategory, selectedType, sortOption } = useFilterStore();
   const sortOptions = useFilterStore((state) => state.sortOption);
   const setSortOption = useFilterStore((state) => state.setSortOption);
-
+  const [products, setProducts] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+  
+    useEffect(() => {
+      const fetchProducts = async () => {
+        try {
+          setLoading(true);
+          setError(null);
+          const data = await getProducts();
+          setProducts(data.products || []);
+        } catch (err: any) {
+          console.error("Failed to fetch products:", err);
+          setError("Failed to load products. Please check your network connection.");
+        } finally {
+          setLoading(false);
+        }
+      };
+  
+      fetchProducts();
+    }, []);
   
     
  
