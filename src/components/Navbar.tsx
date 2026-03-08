@@ -1,15 +1,43 @@
 "use client"
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCartStore } from "@/store/cartStore";
+import { useAuthStore } from "@/store/authStore";
 import { usePathname } from "next/navigation";
 import { Search, User, ShoppingBag, Menu, X, ChevronLeft } from "lucide-react";
+import axiosInstance from "@/lib/axios";
+import { DropdownMenuShortcuts } from "./DropdownMenuShortcuts";
+
+interface User {
+  firstName: string;
+  lastName: string;
+  email: string;
+  // Add other fields as needed based on the API response
+}
 
 export default function Navbar() {
   const [visible, setVisible] = useState(false);
   const totalItems = useCartStore((state) => state.getTotalItems());
   const pathname = usePathname();
+  const user = useAuthStore((state) => state.user);
+  const setUser = useAuthStore((state) => state.setUser);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (token && !user) {
+          const res = await axiosInstance.get("/auth/me");
+          setUser(res.data);
+        }
+      } catch (error) {
+        console.log("Failed to fetch user context", error);
+      }
+    };
+
+    fetchUser();
+  }, [user, setUser]);
 
   const navLinks = [
     { name: "HOME", href: "/" },
@@ -46,8 +74,9 @@ export default function Navbar() {
       <div className="flex items-center gap-6">
         <Search className="w-5 cursor-pointer text-gray-700 hover:text-black transition-colors" />
 
-        <Link href="/login">
+        <Link href={user ? '/':'/login'} className="flex items-center gap-2">
           <User className="w-5 cursor-pointer text-gray-700 hover:text-black transition-colors" />
+          {user && <span className="text-sm font-medium text-gray-700"><DropdownMenuShortcuts user={user.firstName} /> </span>}
         </Link>
 
         <Link href="/cart" className="relative">

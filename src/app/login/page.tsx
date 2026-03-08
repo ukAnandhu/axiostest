@@ -1,8 +1,17 @@
 "use client"
+import { loginUser } from "@/services/authService";
+import { useAuthStore } from "@/store/authStore";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 export default function LoginPage() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const setUser = useAuthStore((state) => state.setUser);
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -14,9 +23,27 @@ export default function LoginPage() {
     },
   });
 
-  const onSubmit = (data: any) => {
-    console.log("Login data:", data);
-    // Handle login logic here
+  // const onSubmit = (data: any) => {
+  //   console.log("Login data:", data);
+  //   // Handle login logic here
+  // };
+  const onSubmit = async (e: any) => {
+
+
+    try {
+      const data = await loginUser({ username, password });
+
+      console.log(data);
+
+      localStorage.setItem("token", data.accessToken);
+      setUser(data);
+
+      alert("Login Successful");
+      router.push("/");
+
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -51,6 +78,8 @@ export default function LoginPage() {
                 focus:border-gray-800
                 placeholder:text-gray-400
               `}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
             />
             {errors.username && (
               <span className="text-xs text-red-500">{errors.username.message as string}</span>
@@ -75,6 +104,8 @@ export default function LoginPage() {
                 focus:border-gray-800
                 placeholder:text-gray-400
               `}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
             {errors.password && (
               <span className="text-xs text-red-500">{errors.password.message as string}</span>
