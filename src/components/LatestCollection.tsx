@@ -72,6 +72,16 @@ export default function LatestCollections() {
         )}
       </div>
 
+      {/* All Products Button */}
+      <div className="flex justify-center mt-12">
+        <a
+          href="/all-products"
+          className="px-8 py-3 bg-white border border-gray-300 text-gray-700 font-medium hover:bg-gray-50 transition-colors uppercase tracking-widest text-sm"
+        >
+          All Products
+        </a>
+      </div>
+
     </section>
   );
 }
