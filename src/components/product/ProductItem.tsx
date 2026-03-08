@@ -54,7 +54,7 @@ export default function ProductItem({ id }: Props) {
       id: product.id,
       title: product.title,
       price: product.price,
-      image: product.image,
+      image: mainImage,
       size: selectedSize,
       category: "men", // Using dummy default or deriving if product type has it
       type: "topwear" // Using dummy default or deriving if product type has it
