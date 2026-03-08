@@ -1,30 +1,51 @@
 "use client";
-
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Star } from "lucide-react";
 import Producttabs from "./Producttabs";
 import RelatedProducts from "./RelatedProducts";
 import { useCartStore } from "@/store/cartStore";
-import Link from "next/link";
+import axiosInstance from "@/lib/axios";
 
 import { Product } from "@/types/product";
 
 interface Props {
-  product: Product;
+  id: string;
 }
 
-export default function ProductItem({ product }: Props) {
-  // Use product images if available, otherwise just duplicate the main image for the demo gallery
-  const galleryImages = product.images && product.images.length > 0
-    ? product.images
-    : [product.image, product.image, product.image, product.image];
-
-  const [mainImage, setMainImage] = useState(galleryImages[0]);
+export default function ProductItem({ id }: Props) {
+  const [product, setProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [mainImage, setMainImage] = useState("");
   const [selectedSize, setSelectedSize] = useState("");
   const addToCart = useCartStore((state) => state.addToCart);
 
+  useEffect(() => {
+    const fetchProduct = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const res = await axiosInstance.get(`/products/${id}`);
+        setProduct(res.data);
+        if (res.data.image) {
+          setMainImage(res.data.image);
+        } else if (res.data.images && res.data.images.length > 0) {
+          setMainImage(res.data.images[0]);
+        }
+      } catch (err: any) {
+        console.error("Error fetching product:", err);
+        setError("Failed to load product details.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProduct();
+  }, [id]);
+
   const handleAddToCart = () => {
+    if (!product) return;
     if (!selectedSize) {
       alert("Please select a size first.");
       return;
@@ -40,6 +61,14 @@ export default function ProductItem({ product }: Props) {
     });
     alert("Product added to cart!");
   };
+
+  if (loading) return <div className="min-h-[50vh] flex items-center justify-center">Loading product...</div>;
+  if (error || !product) return <div className="min-h-[50vh] flex items-center justify-center text-red-500">{error || "Product not found"}</div>;
+
+  // Use product images if available, otherwise just duplicate the main image for the demo gallery
+  const galleryImages = product.images && product.images.length > 0
+    ? product.images
+    : [product.image, product.image, product.image, product.image];
 
   return (
     <div>
@@ -96,11 +125,14 @@ export default function ProductItem({ product }: Props) {
               {/* Rating */}
               <div className="flex items-center gap-2 mt-4">
                 <div className="flex text-[#FF6347]">
-                  {[1, 2, 3, 4, 5].map((star) => (
+                  {/* {[1, 2, 3, 4, 5].map((star) => (
                     <Star key={star} size={16} fill="currentColor" stroke="none" />
+                  ))} */}
+                  {[1, 2, 3, 4, 5].map((index) => (
+                    <Star key={index} size={16} fill={index <= Math.round(product.rating) ? "currentColor" : "transparent"} stroke={index <= Math.round(product.rating) ? "none" : "currentColor"} />
                   ))}
                 </div>
-                <span className="text-sm text-gray-600">(122)</span>
+                <span className="text-sm text-gray-600">({product.reviews.length})</span>
               </div>
 
               {/* Price */}
@@ -112,16 +144,14 @@ export default function ProductItem({ product }: Props) {
 
               {/* Description */}
               <p className="text-gray-500 mt-6 leading-relaxed text-sm md:w-[85%]">
-                A lightweight, usually knitted, pullover shirt, close-fitting and
-                with a round neckline and short sleeves, worn as an undershirt or
-                outer garment.
+                {product.description}
               </p>
 
               {/* Size Selector */}
               <div className="mt-8">
                 <p className="text-sm font-medium text-gray-800 mb-4">Select Size</p>
                 <div className="flex flex-wrap gap-3">
-                  {product.sizes.map((size) => (
+                  {(product.sizes || ["S", "M", "L", "XL", "XXL"]).map((size) => (
                     <button
                       key={size}
                       onClick={() => setSelectedSize(size)}

@@ -11,6 +11,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const setUser = useAuthStore((state) => state.setUser);
   const router = useRouter();
+ const [loading, setLoading] = useState(false);
 
   const {
     register,
@@ -29,15 +30,14 @@ export default function LoginPage() {
   // };
   const onSubmit = async (e: any) => {
 
-
     try {
+      setLoading(true);
       const data = await loginUser({ username, password });
 
       console.log(data);
-
       localStorage.setItem("token", data.accessToken);
       setUser(data);
-
+      
       alert("Login Successful");
       router.push("/");
 
@@ -143,7 +143,7 @@ export default function LoginPage() {
                 tracking-wider
               "
             >
-              Sign In
+              {loading ? 'Loading...' : 'Sign In'}
             </button>
           </div>
         </form>

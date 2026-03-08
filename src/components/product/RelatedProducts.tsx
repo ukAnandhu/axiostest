@@ -1,5 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import axiosInstance from "@/lib/axios";
 
 import { Product } from "@/types/product";
 
@@ -8,6 +10,34 @@ interface Props {
 }
 
 export default function RelatedProducts({ product }: Props) {
+  const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchRelated = async () => {
+      try {
+        // Fetching products from the same category
+        const res = await axiosInstance.get(`/products/category/${product.category}`);
+        // Filter out the current product
+        if (res.data && res.data.products) {
+          const filtered = res.data.products.filter((p: any) => p.id.toString() !== product.id.toString());
+          setRelatedProducts(filtered.slice(0, 5));
+        }
+      } catch (error) {
+        console.error("Error fetching related products:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (product.category) {
+      fetchRelated();
+    }
+  }, [product.category, product.id]);
+
+  if (loading) return null;
+  if (relatedProducts.length === 0) return null;
+
   return (
     <section className="w-full  py-16 px-4">
 
@@ -33,43 +63,44 @@ export default function RelatedProducts({ product }: Props) {
           gap-6
         ">
 
+          {relatedProducts.map((item) => (
+            <div key={item.id} className="group cursor-pointer">
 
-          <div className="group cursor-pointer">
+              {/* Image */}
+              <div className="overflow-hidden bg-white">
+                <Link href={`/products/${item.id}`}>
+                  <Image
+                    src={item.image || (item.images && item.images[0]) || "/placeholder.png"}
+                    alt={item.title}
+                    width={400}
+                    height={500}
+                    className="
+                        w-full 
+                        h-[250px] 
+                        object-cover
+                        transition-transform
+                        duration-300
+                        group-hover:scale-105
+                      "
+                  />
+                </Link>
+              </div>
 
-            {/* Image */}
-            <div className="overflow-hidden bg-white">
-              <Link href={`/products/${product.id}`}>
-                <Image
-                  src={product.image}
-                  alt={product.title}
-                  width={400}
-                  height={500}
-                  className="
-                      w-full 
-                      h-auto 
-                      object-cover
-                      transition-transform
-                      duration-300
-                      group-hover:scale-105
-                    "
-                />
-              </Link>
+              {/* Product Info */}
+              <div className="pt-3">
+
+                <h3 className="text-sm text-gray-700 truncate">
+                  {item.title}
+                </h3>
+
+                <p className="text-sm font-medium text-gray-800 mt-1">
+                  ${item.price}
+                </p>
+
+              </div>
+
             </div>
-
-            {/* Product Info */}
-            <div className="pt-3">
-
-              <h3 className="text-sm text-gray-700">
-                {product.title}
-              </h3>
-
-              <p className="text-sm font-medium text-gray-800 mt-1">
-                ${product.price}
-              </p>
-
-            </div>
-
-          </div>
+          ))}
 
         </div>
 

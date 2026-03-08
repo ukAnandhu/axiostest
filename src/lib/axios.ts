@@ -19,3 +19,43 @@ axiosInstance.interceptors.request.use((config) => {
 });
 
 export default axiosInstance;
+
+axiosInstance.interceptors.response.use(
+
+  (response) => response,
+
+  async (error) => {
+
+    const originalRequest = error.config;
+
+    if (error.response.status === 401) {
+
+      const refreshToken = localStorage.getItem("refreshToken");
+
+      try {
+
+        const res = await axios.post(
+          "https://dummyjson.com/auth/refresh",
+          { refreshToken }
+        );
+
+        const newAccessToken = res.data.accessToken;
+
+        localStorage.setItem("accessToken", newAccessToken);
+
+        originalRequest.headers.Authorization =
+          `Bearer ${newAccessToken}`;
+
+        return axiosInstance(originalRequest);
+
+      } catch (err) {
+
+        localStorage.removeItem("accessToken");
+        window.location.href = "/login";
+
+      }
+    }
+
+    return Promise.reject(error);
+  }
+);
