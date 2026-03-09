@@ -16,3 +16,15 @@ export const getProducts = async (limit: number = 10) => {
 
     return response.data;
 };
+
+export const updateProductTitle = async (id: number, title: string) => {
+    const response = await axiosInstance.patch(`/products/${id}`, {
+        title,
+    });
+    return response.data;
+};
+
+export const deleteProduct = async (id: number) => {
+    const response = await axiosInstance.delete(`/products/${id}`);
+    return response.data;
+};
